@@ -1,9 +1,6 @@
 
 var mongoose = require('mongoose');
 
-
-
-
 const Todo = mongoose.Schema({
     title: {type: String, required: [true, "cant be blank"]},
     description: String,
