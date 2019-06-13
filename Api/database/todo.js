@@ -3,11 +3,15 @@ var mongoose = require('mongoose');
 
 const Todo = mongoose.Schema({
     title: {type: String, required: [true, "cant be blank"]},
-    description: String,
+    description: {type: String, required: [true, "cant be blank"]},
     completed:{
         type:Boolean,
         enum:['true','false']
-    }
+    },
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'user'
+      },
     },{
     timestamps: true
 });
