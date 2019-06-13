@@ -89,7 +89,24 @@ User.findOne({$or:[{username:req.body.username},{email:req.body.email}]},(err,do
 
 })
 
-    
+router.put('/editUser',auth.checkToken,(req, res) => {
+    User.findById(req.userId, 'username,contact ', function (error, user) {
+      if (error) 
+      {
+        return res.status(404).send("Account not found")
+      }
+      user.username=req.body.username
+      user.contact=req.body.contact
+      user.save(function(error){
+        if(error){
+          console.error(error)
+        }
+        res.send({
+          msg:'You have updated the your profile successfully'
+        })
+      })
+    })
+  })
     
   module.exports =router
   
