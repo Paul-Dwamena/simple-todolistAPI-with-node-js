@@ -5,7 +5,7 @@ const auth=require('../src/helper')
 
 
 //register route
-router.all('/', (req, res)=>{ 
+router.all('/register', (req, res)=>{ 
 
     if (req.method != "POST"){
           console.log(req.method)
@@ -48,6 +48,47 @@ router.all('/', (req, res)=>{
 }
 })}
   )
+
+
+  //login route
+  router.all('/login',(req,res)=>{
+
+	if (req.method != "POST"){
+        console.log(req.method)
+        res.status('405').send('Method not allowed')
+	}
+	
+User.findOne({$or:[{username:req.body.username},{email:req.body.email}]},(err,doc)=>{
+		if (err)
+			res.status(500).send("Error on the server ")
+		else{
+			if(doc){
+                var ispasswordvalid=doc.password==req.body.password
+                if(ispasswordvalid){
+                    res.json({
+                        id:doc.id,
+                        username:doc.username,
+                        contact:doc.contact,
+                        email:doc.email,
+                        token: auth.generate_token(doc.id,doc.password,doc.email)
+                    })
+                }else{
+                    res.status(401).send({
+                        error:"Wrong username or Password",
+                        auth:false,
+                    token:null})
+                }
+            }
+                		
+            else{
+				res.status(400).send({
+					error:"Wrong username or Password"})
+			}
+		}
+	})
+
+})
+
     
     
   module.exports =router

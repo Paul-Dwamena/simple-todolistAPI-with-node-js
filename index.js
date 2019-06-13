@@ -3,6 +3,7 @@ const app = express();
 const bodyParser=require('body-parser')
 const mongoose = require('mongoose')
 const db=require('./Api/config/db')
+const usercontroller=require('./Api/src/UserController')
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -17,6 +18,7 @@ mongoose.connect(db.name,{useNewUrlParser: true, useCreateIndex: true},(err)=>{
 })
 
 
+app.use('/user',usercontroller)
 
 
 app.listen(5050, () => {
